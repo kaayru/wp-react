@@ -8,17 +8,16 @@ class MenuActions {
     return (dispatch) => {
       dispatch(menuId);
 
-      axios.get(WP_API_ENDPOINTS.menus + '/' + menuId).then((response) => {
-        this.updateMenu(response.data);
+      axios.get(WP_API_ENDPOINTS.menus + '/' + menuId).then((response) => { 
+        this.updateMenu(menuId, response.data);
       }).catch((error) => {
-        console.log(error);
         this.fetchMenuFailed(error);
       });
     }
   }
   
-  updateMenu(data) {
-    return data;
+  updateMenu(menuId, data) {
+    return { menuId, data };
   }
 
   fetchMenuFailed(errorMessage) {

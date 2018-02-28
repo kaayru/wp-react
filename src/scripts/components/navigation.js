@@ -1,8 +1,7 @@
-import React          from 'react';
-import MenuActions    from 'flux/actions/MenuActions.js';
-import MenuStore      from 'flux/stores/MenuStore.js';
-
-const menuName = 'primary'
+import React              from 'react';
+import MenuActions        from 'flux/actions/MenuActions.js';
+import MenuStore          from 'flux/stores/MenuStore.js';
+import { PRIMARY_MENU }       from 'config/menu.config.js';
 
 var Navigation = React.createClass({
   getInitialState() {
@@ -11,7 +10,7 @@ var Navigation = React.createClass({
 
   componentDidMount() {
     MenuStore.listen(this.onChange);
-    MenuActions.fetchMenu(menuName);
+    MenuActions.fetchMenu(PRIMARY_MENU);
   },
 
   componentWillUnmount() {
@@ -19,24 +18,17 @@ var Navigation = React.createClass({
   },
 
   onChange(state) {
-    console.log(state);
     this.setState(state);
   },
 
   render() {
-    if (this.state.errorMessage) {
-      return (
-        <div>Something is wrong: { this.state.errorMessage } </div>
-      );
-    }
-
-    if (!this.state.menus || !this.state.menus[menuName]) {
-      return <div>Loading...</div>;
+    if (!this.state.menus || !this.state.menus[PRIMARY_MENU]) {
+      return <div></div>;
     }
 
     return (
       <ul>
-        { this.state.menus[menuName].items.map((menuItem, i) => {
+        { this.state.menus[PRIMARY_MENU].items.map((menuItem, i) => {
             return (<li key={ i }><a href={ menuItem.url }>{ menuItem.title }</a></li>)
         }) }
       </ul>

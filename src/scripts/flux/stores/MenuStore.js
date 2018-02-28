@@ -12,15 +12,15 @@ class MenuStore {
     });
   }
 
-  handleUpdateMenu(menu) {
-    this.menus[menu.slug] = menu;
+  handleUpdateMenu(menuInfo) {
+    this.menus[menuInfo.menuId] = menuInfo.data;
     this.errorMessage = null;
   }
-  handleFetchMenu(menuSlug) {
+  handleFetchMenu(menuId) {
     // reset the array while we're fetching new menu so React can
     // be smart and render a spinner for us since the data is empty.
-    if (this.menus[menuSlug]) {
-      delete this.menus[menuSlug];
+    if (this.menus[menuId]) {
+      delete this.menus[menuId];
     }
   }
 
