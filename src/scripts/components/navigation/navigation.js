@@ -1,7 +1,9 @@
 import React              from 'react';
 import MenuActions        from 'flux/actions/MenuActions.js';
 import MenuStore          from 'flux/stores/MenuStore.js';
-import { PRIMARY_MENU }       from 'config/menu.config.js';
+import { PRIMARY_MENU }   from 'config/menu.config.js';
+
+import './navigation.scss';
 
 var Navigation = React.createClass({
   getInitialState() {
@@ -23,15 +25,17 @@ var Navigation = React.createClass({
 
   render() {
     if (!this.state.menus || !this.state.menus[PRIMARY_MENU]) {
-      return <div></div>;
+      return <div className="navigation"></div>;
     }
 
     return (
-      <ul>
-        { this.state.menus[PRIMARY_MENU].items.map((menuItem, i) => {
-            return (<li key={ i }><a href={ menuItem.url }>{ menuItem.title }</a></li>)
-        }) }
-      </ul>
+      <div className="navigation">
+        <ul>
+          { this.state.menus[PRIMARY_MENU].items.map((menuItem, i) => {
+              return (<li key={ i }><a href={ menuItem.url }>{ menuItem.title }</a></li>)
+          }) }
+        </ul>
+      </div>
     )
   }
 });
