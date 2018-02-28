@@ -43,6 +43,14 @@ module.exports = {
 	module: {
 		loaders: [
 			{
+				test: /\.jsx?$/,
+				include: [
+					PATHS.src()
+				],
+				loader: ['react-hot-loader']
+
+			},
+			{
 				loader: "babel-loader",
 				include: [
 					PATHS.src()
