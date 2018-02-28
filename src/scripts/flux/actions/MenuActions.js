@@ -1,5 +1,5 @@
-import axios from 'axios';
-import alt   from 'flux/alt/alt.js';
+import axios                from 'axios';
+import alt                  from 'flux/alt/alt.js';
 import { WP_API_ENDPOINTS } from 'config/api.config.js';
 
 class MenuActions {
