@@ -1,3 +1,13 @@
 .navigation {
-  background: blue;
+  &__list {
+    display: flex;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__item {
+    margin: 0;
+    padding: 0;
+  }
 }
