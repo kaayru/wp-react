@@ -15,9 +15,9 @@ class AppInitializer {
     run() {
         render(
             <div>
-                <Navigation></Navigation>
                 <Router>
                     <div>
+                        <Navigation></Navigation>
                         <Switch>
                             <Route path="/" component={ Home } exact />
                             <Route path="/:pageSlug" component={ Page } exact />
