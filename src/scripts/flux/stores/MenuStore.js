@@ -13,7 +13,7 @@ class MenuStore {
   }
 
   handleUpdateMenu(menuInfo) {
-    this.menus[menuInfo.menuId] = menuInfo.data;
+    this.menus[menuInfo.menuId] = menuInfo.menu;
     this.errorMessage = null;
   }
   handleFetchMenu(menuId) {
