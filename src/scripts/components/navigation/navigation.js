@@ -35,7 +35,19 @@ var Navigation = createReactClass({
     return menuItemRelativePath === this.context.router.route.location.pathname;
   },
 
-  getClassName(menuItem) {
+  getMenuClassName(menu) {
+    let classNameArray = [];
+    classNameArray.push('navigation__list');
+
+    if (typeof menu.menu_item_parent === 'undefined') {
+      classNameArray.push('menu nav-menu');
+    } else {
+      classNameArray.push('navigation__list--sub sub-menu');
+    }
+    return classNameArray.join(' ');
+  },
+
+  getMenuItemClassName(menuItem) {
     let classNameArray = [];
     classNameArray.push('navigation__item menu-item');
     classNameArray.push(`menu-item-type-${menuItem.type}`);
@@ -47,7 +59,26 @@ var Navigation = createReactClass({
       classNameArray.push('current-menu-item current_page_item');
     }
 
+    if (menuItem.has_children) {
+      classNameArray.push(`menu-item-has-children`);
+    }
+
     return classNameArray.join(' ');
+  },
+
+  renderMenuItems(menu) {
+    return (
+      <ul className={ this.getMenuClassName(menu) }>
+        { menu.items.map((menuItem, i) => {
+          return (
+            <li key={ i } className={ this.getMenuItemClassName(menuItem) }>
+              <Link to={ menuItem.url }>{ menuItem.title }</Link>
+              { menuItem.has_children && this.renderMenuItems(menuItem) }
+            </li>
+          )
+        }) }
+      </ul>
+    )
   },
 
   render() {
@@ -57,15 +88,7 @@ var Navigation = createReactClass({
 
     return (
       <div className="navigation">
-        <ul className="navigation__list menu nav-menu">
-          { this.state.menus[PRIMARY_MENU].items.map((menuItem, i) => {
-            return (
-              <li key={ i } className={ this.getClassName(menuItem) }>
-                <Link to={ menuItem.url }>{ menuItem.title }</Link>
-              </li>
-            )
-          }) }
-        </ul>
+        { this.renderMenuItems(this.state.menus[PRIMARY_MENU]) }
       </div>
     )
   }
