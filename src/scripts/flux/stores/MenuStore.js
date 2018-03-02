@@ -1,5 +1,6 @@
 import alt          from 'flux/alt/alt.js';
 import MenuActions  from 'flux/actions/MenuActions.js';
+import { Menu }     from 'models/menu.model';
 
 class MenuStore {
   constructor() {
@@ -12,15 +13,16 @@ class MenuStore {
     });
   }
 
-  handleUpdateMenu(menu) {
-    this.menus[menu.slug] = menu;
+  handleUpdateMenu(menuInfo) {
+    const menu = new Menu(menuInfo.data);
+    this.menus[menuInfo.menuId] = menu;
     this.errorMessage = null;
   }
-  handleFetchMenu(menuSlug) {
+  handleFetchMenu(menuId) {
     // reset the array while we're fetching new menu so React can
     // be smart and render a spinner for us since the data is empty.
-    if (this.menus[menuSlug]) {
-      delete this.menus[menuSlug];
+    if (this.menus[menuId]) {
+      delete this.menus[menuId];
     }
   }
 

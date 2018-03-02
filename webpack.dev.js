@@ -1,23 +1,34 @@
-var webpack = require('webpack');
-var path = require('path');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+const { PATHS, HOST, PORT, THEME_NAME } = require('./webpack/env.config');
+const utils = require('./webpack/utils');
+const webpack = require('webpack');
+const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const WriteFilePlugin = require('write-file-webpack-plugin');
+
+const WATCH = global.watch || false;
 
 module.exports = {	
-	devtool: 'cheap-module-source-map',
-	devServer: {
-		historyApiFallback: true, // This will make the server understand "/some-link" routs instead of "/#/some-link"
+	entry: {
+		main: [
+			PATHS.src('scripts', 'index.js'),
+			'webpack-hot-middleware/client'
+		],
 	},
-	entry: [
-		'babel-polyfill',
-		'webpack-dev-server/client?http://127.0.0.1:8080/', // Specify the local server port
-		'webpack/hot/only-dev-server', // Enable hot reloading
-		'./src/scripts' // This is where Webpack will be looking for the entry index.js file
-	],
+	
 	output: {
-		path: path.join(__dirname, 'build'), // This is used to specify folder for producion bundle
-		filename: 'bundle.js', // Filename for production bundle
-		publicPath: '/'
+    path: PATHS.compiled(),
+    publicPath: `http://${HOST}:${PORT}/wp-content/themes/${THEME_NAME}/`,
+    filename: 'js/[name].js',
+    sourceMapFilename: '[name].map',
 	},
+	
+	devtool: 'inline-source-map',
+
+	target: 'web',
+
+	watch: WATCH,
+
 	resolve: {
 		modules: [
 			'node_modules', 
@@ -27,39 +38,46 @@ module.exports = {
 		], // Folders where Webpack is going to look for files to bundle together
 		extensions: ['.jsx', '.js'] // Extensions that Webpack is going to expect
 	},
+		
+	
 	module: {
-		// Loaders allow you to preprocess files as you require() or “load” them. 
-		// Loaders are kind of like “tasks” in other build tools, and provide a powerful way to handle frontend build steps.
 		loaders: [
 			{
-				test: /\.jsx?$/, // Here we're going to use JS for react components but including JSX in case this extension is preferable
+				test: /\.jsx?$/,
 				include: [
-					path.resolve(__dirname, "src"),
+					PATHS.src()
 				],
 				loader: ['react-hot-loader']
+
 			},
 			{
 				loader: "babel-loader",
-
-				// Skip any files outside of your project's `src` directory
 				include: [
-					path.resolve(__dirname, "src"),
+					PATHS.src()
 				],
-
-				// Only run `.js` and `.jsx` files through Babel
 				test: /\.jsx?$/,
-
 				// Options to configure babel with
 				query: {
 					plugins: ['transform-runtime'],
 					presets: ['es2015', 'stage-0', 'react'],
 				}
+			},
+			{
+				test: /\.scss$/,
+				include: [
+					PATHS.src()
+				],
+				loader: ['style-loader', 'css-loader?importLoaders=1', 'postcss-loader', 'sass-loader']
 			}
 		]
 	},
 	plugins: [
+		new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify('dev') }),
+		new CopyWebpackPlugin([{ from: PATHS.src('assets'), to: 'assets' }]),
+
 		new webpack.HotModuleReplacementPlugin(), // Hot reloading
 		new webpack.NoEmitOnErrorsPlugin(), // Webpack will let you know if there are any errors
+		new WriteFilePlugin(),
 
 		// Declare global variables
 		new webpack.ProvidePlugin({
@@ -67,11 +85,5 @@ module.exports = {
 			ReactDOM: 'react-dom',
 			_: 'lodash'
 		}),
-
-	    new HtmlWebpackPlugin({
-	        filename: 'index.html',
-	        template: './src/index.html',
-	        hash: false
-	    })
 	]
 }
