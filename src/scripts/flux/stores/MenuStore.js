@@ -1,5 +1,6 @@
 import alt          from 'flux/alt/alt.js';
 import MenuActions  from 'flux/actions/MenuActions.js';
+import { Menu }     from 'models/menu.model';
 
 class MenuStore {
   constructor() {
@@ -13,7 +14,8 @@ class MenuStore {
   }
 
   handleUpdateMenu(menuInfo) {
-    this.menus[menuInfo.menuId] = menuInfo.menu;
+    const menu = new Menu(menuInfo.data);
+    this.menus[menuInfo.menuId] = menu;
     this.errorMessage = null;
   }
   handleFetchMenu(menuId) {

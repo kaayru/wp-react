@@ -10,6 +10,32 @@ export class Menu {
   term_group;
   term_id;
   term_taxonomy_id;
+
+  constructor(data) {
+    if (data) {
+      Object.assign(this, data);
+      this.items = this.initializeMenuItemsFromAPI(this.items);
+    }
+  }
+
+  initializeMenuItemsFromAPI(menuItemsFromAPI) {
+    const menuItems = [];
+
+    menuItemsFromAPI.forEach((item) => {
+      const menuItem = new MenuItem(item);
+      menuItem.children = this.getMenuItemChildren(menuItem, menuItemsFromAPI);
+
+      if (menuItem.menu_item_parent === '0') {
+        menuItems.push(menuItem);
+      }
+    });
+
+    return menuItems;
+  }
+
+  getMenuItemChildren(menuItem, menuItemsFromAPI) {
+      return menuItemsFromAPI.filter((item) => item.menu_item_parent === menuItem.ID);
+  }
 };
 
 export class MenuItem {
@@ -22,6 +48,8 @@ export class MenuItem {
   description;
   filter;
   guid;
+  has_children; // Not in WP model
+  children; // Not in WP model
   menu_item_parent;
   menu_order;
   object;
@@ -50,4 +78,10 @@ export class MenuItem {
   type_label;
   url;
   xfn;
+
+  constructor(data) {
+    if (data) {
+      Object.assign(this, data);
+    }
+  }
 }
