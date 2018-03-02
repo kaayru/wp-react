@@ -11,19 +11,18 @@ export class Menu {
   term_id;
   term_taxonomy_id;
 
-  constructor(data) {
-    if (data) {
-      Object.assign(this, data);
-      this.items = this.initializeMenuItemsFromAPI(this.items);
+  constructor(dataFromAPI) {
+    if (dataFromAPI) {
+      Object.assign(this, dataFromAPI);
+      this.items = this.getMenuItemsFromAPI(this.items);
     }
   }
 
-  initializeMenuItemsFromAPI(menuItemsFromAPI) {
+  getMenuItemsFromAPI(menuItemsFromAPI) {
     const menuItems = [];
 
     menuItemsFromAPI.forEach((item) => {
-      const menuItem = new MenuItem(item);
-      menuItem.children = this.getMenuItemChildren(menuItem, menuItemsFromAPI);
+      const menuItem = new MenuItem(item, menuItemsFromAPI);
 
       if (menuItem.menu_item_parent === '0') {
         menuItems.push(menuItem);
@@ -31,10 +30,6 @@ export class Menu {
     });
 
     return menuItems;
-  }
-
-  getMenuItemChildren(menuItem, menuItemsFromAPI) {
-      return menuItemsFromAPI.filter((item) => item.menu_item_parent === menuItem.ID);
   }
 };
 
@@ -49,7 +44,7 @@ export class MenuItem {
   filter;
   guid;
   has_children; // Not in WP model
-  children; // Not in WP model
+  items; // Not in WP model
   menu_item_parent;
   menu_order;
   object;
@@ -79,9 +74,20 @@ export class MenuItem {
   url;
   xfn;
 
-  constructor(data) {
-    if (data) {
-      Object.assign(this, data);
+  constructor(dataFromAPI, allMenuItemsFromAPI) {
+    if (dataFromAPI) {
+      Object.assign(this, dataFromAPI);
+
+      if (allMenuItemsFromAPI) {
+        this.items = this.getMenuItemChildren(this, allMenuItemsFromAPI);
+        this.has_children = this.items.length > 0
+      }
     }
+  }
+
+  getMenuItemChildren(menuItem, menuItemsFromAPI) {
+    return menuItemsFromAPI
+      .filter((item) => item.menu_item_parent == menuItem.ID)
+      .map((item) => new MenuItem(item, menuItemsFromAPI));
   }
 }
