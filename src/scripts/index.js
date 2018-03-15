@@ -2,7 +2,7 @@ import {render}             from 'react-dom';
 import DataActions          from 'flux/actions/DataActions.js';
 import Home                 from 'components/home.js';
 import Page                 from 'components/page.js';
-import Navigation           from 'components/navigation/navigation.js';
+import Header           from 'components/header/header.js';
 
 import {
     BrowserRouter as Router,
@@ -17,7 +17,7 @@ class AppInitializer {
             <div>
                 <Router>
                     <div>
-                        <Navigation></Navigation>
+                        <Header></Header>
                         <Switch>
                             <Route path="/" component={ Home } exact />
                             <Route path="/:pageSlug" component={ Page } exact />

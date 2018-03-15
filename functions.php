@@ -77,6 +77,27 @@ function wpreact_setup() {
 
 	add_post_type_support( 'post', 'comments' );
 	add_post_type_support( 'page', 'comments' );
+
+	// Set up the WordPress core custom background feature.
+	add_theme_support( 'custom-background', apply_filters( 'wpreact_custom_background_args', array(
+		'default-color' => 'ffffff',
+		'default-image' => '',
+	) ) );
+
+	// Add theme support for selective refresh for widgets.
+	add_theme_support( 'customize-selective-refresh-widgets' );
+
+	/**
+	 * Add support for core custom logo.
+	 *
+	 * @link https://codex.wordpress.org/Theme_Logo
+	 */
+	add_theme_support( 'custom-logo', array(
+		'height'      => 250,
+		'width'       => 250,
+		'flex-width'  => true,
+		'flex-height' => true,
+	) );
 }
 endif; // wpreact_setup
 add_action( 'after_setup_theme', 'wpreact_setup' );
@@ -205,3 +226,36 @@ function _wpreact_filter_wp_api_nav_menu_items_workaround( $items ) {
 	}
 	return $items;
 }
+
+function wpreact_get_settings() {
+	$settings = wp_load_alloptions();
+	$mods = get_theme_mods();
+
+	$return = [];
+
+	if ($settings['blogname']) {
+		$return['name'] = $settings['blogname'];
+	}
+
+	if ($settings['blogdescription']) {
+		$return['description'] = $settings['blogdescription'];
+	}
+
+	if ($settings['home']) {
+		$return['home'] = $settings['home'];
+	}
+
+	if ($mods['custom_logo']) {
+		$logo = wp_get_attachment_image_src( $mods['custom_logo'] , 'full' );
+		$return['custom_logo'] = $logo[0];
+	}
+
+	return $return;
+}
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'wpreact/v1', '/settings', array(
+    'methods' => 'GET',
+    'callback' => 'wpreact_get_settings',
+  ) );
+} );

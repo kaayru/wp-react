@@ -7,8 +7,6 @@ class MenuActions {
 
   fetchMenu(menuId) {
     return (dispatch) => {
-      dispatch(menuId);
-
       axios.get(WP_API_ENDPOINTS.menus + '/' + menuId).then((response) => { 
         this.updateMenu(menuId, response.data);
       }).catch((error) => {
