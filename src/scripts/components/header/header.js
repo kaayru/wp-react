@@ -42,6 +42,14 @@ var Header = createReactClass({
     return <img src={ this.state.settings.custom_logo } />
   },
 
+  renderSiteName() {
+    return this.isHome() ? (
+      <h1 className="site-header-branding__title"><Link to={ this.state.settings.home }>{ this.state.settings.name }</Link></h1>
+    ) : (
+      <p className="site-header-branding__title"><Link to={ this.state.settings.home }>{ this.state.settings.name }</Link></p>
+    )
+  },
+
   render() {
     if (!this.state.settings || !this.state.settings.home) {
       return <header className="site-header"></header>
@@ -51,11 +59,7 @@ var Header = createReactClass({
       <header className="site-header">
 		    <div className="site-header-branding">
           { this.renderLogo() }
-          {this.isHome() ? (
-            <h1 className="site-header-branding__title"><Link to={ this.state.settings.home }>{ this.state.settings.name }</Link></h1>
-          ) : (
-            <p className="site-header-branding__title"><Link to={ this.state.settings.home }>{ this.state.settings.name }</Link></p>
-          )}
+          { this.renderSiteName() }
 				  <p className="site-header-branding__description">{ this.state.settings.description }</p>
         </div>
 
