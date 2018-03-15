@@ -226,3 +226,36 @@ function _wpreact_filter_wp_api_nav_menu_items_workaround( $items ) {
 	}
 	return $items;
 }
+
+function wpreact_get_settings() {
+	$settings = wp_load_alloptions();
+	$mods = get_theme_mods();
+
+	$return = [];
+
+	if ($settings['blogname']) {
+		$return['name'] = $settings['blogname'];
+	}
+
+	if ($settings['blogdescription']) {
+		$return['description'] = $settings['blogdescription'];
+	}
+
+	if ($settings['home']) {
+		$return['home'] = $settings['home'];
+	}
+
+	if ($mods['custom_logo']) {
+		$logo = wp_get_attachment_image_src( $mods['custom_logo'] , 'full' );
+		$return['custom_logo'] = $logo[0];
+	}
+
+	return $return;
+}
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'wpreact/v1', '/settings', array(
+    'methods' => 'GET',
+    'callback' => 'wpreact_get_settings',
+  ) );
+} );
