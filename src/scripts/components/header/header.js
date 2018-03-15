@@ -35,7 +35,7 @@ var Header = createReactClass({
   },
 
   render() {
-    if (!this.state.settings) {
+    if (!this.state.settings || !this.state.settings.home) {
       return <header className="site-header"></header>
     }
 
