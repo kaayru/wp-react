@@ -6,8 +6,6 @@ class SettingsActions {
 
   fetchSettings() {
     return (dispatch) => {
-      dispatch();
-
       axios.get(WP_API_ENDPOINTS.settings).then((response) => { 
         this.updateSettings(response.data);
       }).catch((error) => {
