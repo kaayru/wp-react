@@ -42,7 +42,7 @@ var Header = createReactClass({
     return (
       <header className="site-header">
 		    <div className="site-header-branding">
-          {isHome() ? (
+          {this.isHome() ? (
             <h1 className="site-header-branding__title"><Link to={ this.state.settings.home }>{ this.state.settings.name }</Link></h1>
           ) : (
             <p className="site-header-branding__title"><Link to={ this.state.settings.home }>{ this.state.settings.name }</Link></p>
