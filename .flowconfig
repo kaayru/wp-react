@@ -1,11 +1,13 @@
 [ignore]
+.*/build
+.*/compiled
+.*/node_modules/flux
+.*/node_modules/filehound
+.*/node_modules/file-js
+.*/node_modules/fbjs
 
 [include]
 
-[libs]
-
-[lints]
-
 [options]
-
-[strict]
+module.system.node.resolve_dirname=node_modules
+module.system.node.resolve_dirname=src/scripts
