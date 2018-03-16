@@ -1,25 +1,25 @@
 export class Menu {
-  count;
-  description;
-  filter;
-  items;
-  name;
-  parent;
-  slug;
-  taxonomy;
-  term_group;
-  term_id;
-  term_taxonomy_id;
+  count: number;
+  description: string;
+  filter: string;
+  items: Array<MenuItem>;
+  name: string;
+  parent: number;
+  slug: string;
+  taxonomy: string;
+  term_group: number;
+  term_id: number;
+  term_taxonomy_id: number;
 
-  constructor(dataFromAPI) {
+  constructor(dataFromAPI: Menu) {
     if (dataFromAPI) {
       Object.assign(this, dataFromAPI);
       this.items = this.getMenuItemsFromAPI(this.items);
     }
   }
 
-  getMenuItemsFromAPI(menuItemsFromAPI) {
-    const menuItems = [];
+  getMenuItemsFromAPI(menuItemsFromAPI: Array<MenuItem>): Array<MenuItem> {
+    const menuItems: Array<MenuItem> = [];
 
     menuItemsFromAPI.forEach((item) => {
       const menuItem = new MenuItem(item, menuItemsFromAPI);
@@ -34,47 +34,47 @@ export class Menu {
 };
 
 export class MenuItem {
-  ID;
-  attr_title;
-  classes;
-  comment_count;
-  comment_status;
-  db_id;
-  description;
-  filter;
-  guid;
-  has_children; // Not in WP model
-  items; // Not in WP model
-  menu_item_parent;
-  menu_order;
-  object;
-  object_id;
-  ping_status;
-  pinged;
-  post_author;
-  post_content;
-  post_content_filtered;
-  post_date;
-  post_date_gmt;
-  post_excerpt;
-  post_mime_type;
-  post_modified;
-  post_modified_gmt;
-  post_name;
-  post_parent;
-  post_password;
-  post_status;
-  post_title;
-  post_type;
-  target;
-  title;
-  to_ping;
-  type;
-  type_label;
-  url;
-  xfn;
+  ID: number;
+  attr_title: string;
+  classes: Array<string>;
+  comment_count: string;
+  comment_status: string;
+  db_id: number;
+  description: string;
+  filter: string;
+  guid: string;
+  has_children: boolean; // Not in WP model
+  items: Array<MenuItem>; // Not in WP model
+  menu_item_parent: string;
+  menu_order: number;
+  object: string;
+  object_id: string;
+  ping_status: string;
+  pinged: string;
+  post_author: string;
+  post_content: string;
+  post_content_filtered: string;
+  post_date: string;
+  post_date_gmt: string;
+  post_excerpt: string;
+  post_mime_type: string;
+  post_modified: string;
+  post_modified_gmt: string;
+  post_name: string;
+  post_parent: number;
+  post_password: string;
+  post_status: string;
+  post_title: string;
+  post_type: string;
+  target: string;
+  title: string;
+  to_ping: string;
+  type: string;
+  type_label: string;
+  url: string;
+  xfn: string;
 
-  constructor(dataFromAPI, allMenuItemsFromAPI) {
+  constructor(dataFromAPI: MenuItem, allMenuItemsFromAPI: Array<MenuItem>) {
     if (dataFromAPI) {
       Object.assign(this, dataFromAPI);
 
@@ -85,7 +85,7 @@ export class MenuItem {
     }
   }
 
-  getMenuItemChildren(menuItem, menuItemsFromAPI) {
+  getMenuItemChildren(menuItem, menuItemsFromAPI): Array<MenuItem> {
     return menuItemsFromAPI
       .filter((item) => item.menu_item_parent == menuItem.ID)
       .map((item) => new MenuItem(item, menuItemsFromAPI));
