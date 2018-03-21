@@ -35,3 +35,4 @@ class SettingsStore {
 }
 
 export default alt.createStore(SettingsStore, 'SettingsStore');
+export type SettingsStoreState = {settings: Settings, errorMessage: string};
