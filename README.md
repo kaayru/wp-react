@@ -4,6 +4,7 @@
 * [Theme built with React](https://github.com/ryelle/Anadama-React)
 * [Step by step tutorial](https://medium.freecodecamp.org/how-to-build-react-apps-on-top-of-the-wordpress-rest-api-bcc632808025)
 * [Wordpress HRM Webpack](https://github.com/tadejstanic/wp-hrm-webpack)
+* [Alt Flow React Example](https://github.com/theodesp/alt-flow-react-example/)
 
 ## Getting started
 
