@@ -2,7 +2,6 @@
 
 import React                        from 'react';
 import type { Element, Node }       from 'react';
-import createReactClass             from 'create-react-class';
 import { Link }                     from 'react-router-dom';
 import Navigation                   from 'components/navigation/navigation.js';
 import SettingsActions              from 'flux/actions/SettingsActions.js';

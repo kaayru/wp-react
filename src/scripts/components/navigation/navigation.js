@@ -2,7 +2,6 @@
 
 import React                          from 'react';
 import type { Node }                  from 'react';
-import createReactClass               from 'create-react-class';
 import { Link }                       from 'react-router-dom';
 import MenuActions                    from 'flux/actions/MenuActions.js';
 import MenuStore, { MenuStoreState }  from 'flux/stores/MenuStore.js';
