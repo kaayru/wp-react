@@ -1,8 +1,10 @@
-import DataStore from 'flux/stores/DataStore.js'
+// @flow
+
+import DataStore from 'flux/stores/DataStore.js';
+import React     from 'react';
 
 class Page extends React.Component {
-  render() {
-      console.log(this.props);
+    render() {
         const allData = DataStore.getPageBySlug('home')
 
         return (
@@ -10,7 +12,7 @@ class Page extends React.Component {
                 <h2>Hello world! page</h2>
             </div>
         );
-  }
+    }
 }
 
 export default Page;
