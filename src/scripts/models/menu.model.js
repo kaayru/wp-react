@@ -1,3 +1,5 @@
+// @flow
+
 export class Menu {
   count: number;
   description: string;
