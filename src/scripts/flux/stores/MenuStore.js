@@ -32,9 +32,10 @@ class MenuStore {
     }
   }
 
-  handleFetchMenuFailed(errorMessage) {
+  handleFetchMenuFailed(errorMessage: string) {
     this.errorMessage = errorMessage;
   }
 }
 
 export default alt.createStore(MenuStore, 'MenuStore');
+export type MenuStoreState = {menus: Array<Menu>, errorMessage: string};

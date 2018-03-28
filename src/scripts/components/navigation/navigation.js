@@ -1,41 +1,46 @@
-import React                from 'react';
-import createReactClass     from 'create-react-class';
-import { Link }             from 'react-router-dom';
-import MenuActions          from 'flux/actions/MenuActions.js';
-import MenuStore            from 'flux/stores/MenuStore.js';
-import { PRIMARY_MENU }     from 'config/menu.config.js';
-import { WP_API_BASE_URL }  from 'config/api.config';
+// @flow
+
+import React                          from 'react';
+import type { Node }                  from 'react';
+import createReactClass               from 'create-react-class';
+import { Link }                       from 'react-router-dom';
+import MenuActions                    from 'flux/actions/MenuActions.js';
+import MenuStore, { MenuStoreState }  from 'flux/stores/MenuStore.js';
+import { PRIMARY_MENU }               from 'config/menu.config.js';
+import { WP_API_BASE_URL }            from 'config/api.config';
+import { Menu, MenuItem }             from 'models/menu.model';
 
 import './navigation.scss';
 
-var Navigation = createReactClass({
-  contextTypes: {
+class Navigation extends React.Component {
+  static contextTypes = {
     router: React.PropTypes.object
-  },
+  }
 
-  getInitialState() {
-    return MenuStore.getState();
-  },
+  constructor() {
+    super();
+    this.state = MenuStore.getState();
+  }
 
   componentDidMount() {
-    MenuStore.listen(this.onChange);
+    MenuStore.listen(this.onChange.bind(this));
     MenuActions.fetchMenu(PRIMARY_MENU);
-  },
+  }
 
   componentWillUnmount() {
     MenuStore.unlisten(this.onChange);
-  },
+  }
 
-  onChange(state) {
+  onChange(state: MenuStoreState) {
     this.setState(state);
-  },
+  }
 
-  isCurrentRoute(menuItem) {
+  isCurrentRoute(menuItem: MenuItem): boolean {
     const menuItemRelativePath = menuItem.url.replace(WP_API_BASE_URL, '');
     return menuItemRelativePath === this.context.router.route.location.pathname;
-  },
+  }
 
-  getMenuClassName(menu) {
+  getMenuClassName(menu: Menu): string {
     let classNameArray = [];
     classNameArray.push('navigation__list');
 
@@ -45,9 +50,9 @@ var Navigation = createReactClass({
       classNameArray.push('navigation__list--sub sub-menu');
     }
     return classNameArray.join(' ');
-  },
+  }
 
-  getMenuItemClassName(menuItem) {
+  getMenuItemClassName(menuItem: MenuItem): string {
     let classNameArray = [];
     classNameArray.push('navigation__item menu-item');
     classNameArray.push(`menu-item-type-${menuItem.type}`);
@@ -64,9 +69,9 @@ var Navigation = createReactClass({
     }
 
     return classNameArray.join(' ');
-  },
+  }
 
-  renderMenuItems(menu) {
+  renderMenuItems(menu: Menu) {
     return (
       <ul className={ this.getMenuClassName(menu) }>
         { menu.items.map((menuItem, i) => {
@@ -79,9 +84,9 @@ var Navigation = createReactClass({
         }) }
       </ul>
     )
-  },
+  }
 
-  render() {
+  render(): Node {
     if (!this.state.menus || !this.state.menus[PRIMARY_MENU]) {
       return <div className="navigation"></div>;
     }
@@ -92,6 +97,6 @@ var Navigation = createReactClass({
       </div>
     )
   }
-});
+};
 
 export default Navigation;
