@@ -5,6 +5,7 @@ const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
+const FlowWebpackPlugin = require('flow-webpack-plugin')
 
 const WATCH = global.watch || false;
 
@@ -50,6 +51,7 @@ module.exports = {
 				// Options to configure babel with
 				query: {
 					plugins: ['transform-runtime'],
+					babelrc: false,
 					presets: ['es2015', 'stage-0', 'react'],
 				}
 			},
@@ -68,6 +70,7 @@ module.exports = {
 	plugins: [
 		new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify('dev') }),
 		new CopyWebpackPlugin([{ from: PATHS.src('assets'), to: 'assets' }]),
+		new FlowWebpackPlugin(),
 
 		new ExtractTextPlugin('main.css'),
 		new webpack.optimize.UglifyJsPlugin({
