@@ -10,17 +10,12 @@ import { WP_API_BASE_URL } from 'config/api.config';
 import { Menu, MenuItem } from 'models/menu.model';
 import { fetchMenu } from 'actions';
 
-// import './navigation.scss';
+import './navigation.scss';
 
 class Navigation extends React.Component {
   static contextTypes = {
     router: React.PropTypes.object
   }
-
-  /*constructor() {
-    super();
-    this.state = MenuStore.getState();
-  }*/
 
   componentDidMount() {
     this.props.fetchMenu('primary');
