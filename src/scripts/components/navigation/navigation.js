@@ -56,14 +56,14 @@ class Navigation extends React.Component {
     return classNameArray.join(' ');
   }
 
-  renderMenuItems(menu: Menu) {
+  renderMenu(menu: Menu) {
     return (
       <ul className={ this.getMenuClassName(menu) }>
         { menu.items.map((menuItem, i) => {
           return (
             <li key={ i } className={ this.getMenuItemClassName(menuItem) }>
               <Link to={ menuItem.url }>{ menuItem.title }</Link>
-              { menuItem.has_children && this.renderMenuItems(menuItem) }
+              { menuItem.items.length > 0 && this.renderMenu(menuItem) }
             </li>
           )
         }) }
