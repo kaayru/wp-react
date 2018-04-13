@@ -5,8 +5,7 @@ export default function(state = null, action) {
     case `${FETCH_MENU}_FULFILLED`: 
       const menu =  action.payload.data;
       const menuId = action.meta.menuId;
-      const newState = {...state, [menuId]: menu};
-      return newState;
+      return {...state, [menuId]: menu};
   }
   
   return state;
