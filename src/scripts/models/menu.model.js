@@ -12,27 +12,6 @@ export class Menu {
   term_group: number;
   term_id: number;
   term_taxonomy_id: number;
-
-  constructor(dataFromAPI: Menu) {
-    if (dataFromAPI) {
-      Object.assign(this, dataFromAPI);
-      this.items = this.getMenuItemsFromAPI(this.items);
-    }
-  }
-
-  getMenuItemsFromAPI(menuItemsFromAPI: Array<MenuItem>): Array<MenuItem> {
-    const menuItems: Array<MenuItem> = [];
-
-    menuItemsFromAPI.forEach((item) => {
-      const menuItem = new MenuItem(item, menuItemsFromAPI);
-
-      if (menuItem.menu_item_parent === '0') {
-        menuItems.push(menuItem);
-      }
-    });
-
-    return menuItems;
-  }
 };
 
 export class MenuItem {
@@ -45,7 +24,6 @@ export class MenuItem {
   description: string;
   filter: string;
   guid: string;
-  has_children: boolean; // Not in WP model
   items: Array<MenuItem>; // Not in WP model
   menu_item_parent: string;
   menu_order: number;
@@ -75,21 +53,4 @@ export class MenuItem {
   type_label: string;
   url: string;
   xfn: string;
-
-  constructor(dataFromAPI: MenuItem, allMenuItemsFromAPI: Array<MenuItem>) {
-    if (dataFromAPI) {
-      Object.assign(this, dataFromAPI);
-
-      if (allMenuItemsFromAPI) {
-        this.items = this.getMenuItemChildren(this, allMenuItemsFromAPI);
-        this.has_children = this.items.length > 0
-      }
-    }
-  }
-
-  getMenuItemChildren(menuItem, menuItemsFromAPI): Array<MenuItem> {
-    return menuItemsFromAPI
-      .filter((item) => item.menu_item_parent == menuItem.ID)
-      .map((item) => new MenuItem(item, menuItemsFromAPI));
-  }
 }
