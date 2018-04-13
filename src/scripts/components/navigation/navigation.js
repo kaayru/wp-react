@@ -5,7 +5,6 @@ import type { Node } from 'react';
 import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { PRIMARY_MENU } from 'config/menu.config.js';
 import { WP_API_BASE_URL } from 'config/api.config';
 import { Menu, MenuItem } from 'models/menu.model';
 import { fetchMenu } from 'actions';
@@ -18,7 +17,7 @@ class Navigation extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchMenu('primary');
+    this.props.fetchMenu(this.props.name);
   }
 
   isCurrentRoute(menuItem: MenuItem): boolean {
@@ -73,13 +72,14 @@ class Navigation extends React.Component {
   }
 
   render(): Node {
-    if (!this.props.menus || !this.props.menus[PRIMARY_MENU]) {
+
+    if (!this.props.menus || !this.props.menus[this.props.name]) {
       return <div className="navigation"></div>;
     }
 
     return (
       <div className="navigation">
-        { this.renderMenuItems(this.props.menus[PRIMARY_MENU]) }
+        { this.renderMenu(this.props.menus[this.props.name]) }
       </div>
     )
   }

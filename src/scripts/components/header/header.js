@@ -52,7 +52,7 @@ class Header extends React.Component {
           { this.renderSiteName() }
 				  <p className="site-header-branding__description">{ this.props.settings.description }</p>
         </div>
-        <Navigation></Navigation>
+        <Navigation name="primary"></Navigation>
 	    </header>
     )
   }
