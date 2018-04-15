@@ -12,14 +12,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "alt": "^0.18.6",
     "axios": "^0.16.2",
     "babel-polyfill": "^6.23.0",
     "babel-runtime": "^6.23.0",
     "lodash": "^4.17.4",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
-    "react-router-dom": "^4.1.1"
+    "react-redux": "^5.0.7",
+    "react-router-dom": "^4.1.1",
+    "redux": "^3.7.2",
+    "redux-promise-middleware": "^5.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

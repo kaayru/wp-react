@@ -1,13 +1,13 @@
 // @flow
 
-import React                          from 'react';
-import type { Node }                  from 'react';
-import { Link }                       from 'react-router-dom';
-import MenuActions                    from 'flux/actions/MenuActions.js';
-import MenuStore, { MenuStoreState }  from 'flux/stores/MenuStore.js';
-import { PRIMARY_MENU }               from 'config/menu.config.js';
-import { WP_API_BASE_URL }            from 'config/api.config';
-import { Menu, MenuItem }             from 'models/menu.model';
+import React from 'react';
+import type { Node } from 'react';
+import { Link } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { WP_API_BASE_URL } from 'config/api.config';
+import { Menu, MenuItem } from 'models/menu.model';
+import { fetchMenu } from 'actions';
 
 import './navigation.scss';
 
@@ -16,22 +16,8 @@ class Navigation extends React.Component {
     router: React.PropTypes.object
   }
 
-  constructor() {
-    super();
-    this.state = MenuStore.getState();
-  }
-
   componentDidMount() {
-    MenuStore.listen(this.onChange.bind(this));
-    MenuActions.fetchMenu(PRIMARY_MENU);
-  }
-
-  componentWillUnmount() {
-    MenuStore.unlisten(this.onChange);
-  }
-
-  onChange(state: MenuStoreState) {
-    this.setState(state);
+    this.props.fetchMenu(this.props.name);
   }
 
   isCurrentRoute(menuItem: MenuItem): boolean {
@@ -70,14 +56,14 @@ class Navigation extends React.Component {
     return classNameArray.join(' ');
   }
 
-  renderMenuItems(menu: Menu) {
+  renderMenu(menu: Menu) {
     return (
       <ul className={ this.getMenuClassName(menu) }>
         { menu.items.map((menuItem, i) => {
           return (
             <li key={ i } className={ this.getMenuItemClassName(menuItem) }>
               <Link to={ menuItem.url }>{ menuItem.title }</Link>
-              { menuItem.has_children && this.renderMenuItems(menuItem) }
+              { menuItem.items.length > 0 && this.renderMenu(menuItem) }
             </li>
           )
         }) }
@@ -86,16 +72,25 @@ class Navigation extends React.Component {
   }
 
   render(): Node {
-    if (!this.state.menus || !this.state.menus[PRIMARY_MENU]) {
+
+    if (!this.props.menus || !this.props.menus[this.props.name]) {
       return <div className="navigation"></div>;
     }
 
     return (
       <div className="navigation">
-        { this.renderMenuItems(this.state.menus[PRIMARY_MENU]) }
+        { this.renderMenu(this.props.menus[this.props.name]) }
       </div>
     )
   }
 };
 
-export default Navigation;
+function mapStateToProps({ menus }) {
+  return { menus }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ fetchMenu }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navigation);
