@@ -29,7 +29,10 @@ services:
        - db
      image: wordpress 
      volumes:
-       - ./wpreact-theme:/var/www/html/wp-content/themes/wpreact
+      - type: bind
+        source: ./wordpress
+        target: /var/www/html
+      - ./wpreact-theme:/var/www/html/wp-content/themes/wpreact
      ports:
        - "8000:80"
      restart: always

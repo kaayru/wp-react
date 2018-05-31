@@ -1,5 +1,5 @@
 #!/bin/bash
-cp docker-extras-settings/.htaccess wordpress/.htaccess
+cp docker-extra-settings/.htaccess wordpress/.htaccess
 
 #Custom WP constants for JWT auth
 sed -i '' '/That'\''s all, stop editing! Happy blogging./i \
